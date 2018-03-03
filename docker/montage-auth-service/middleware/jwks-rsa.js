@@ -4,15 +4,6 @@ var JwksClient = require('jwks-rsa');
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 
-// TODO 
-// - ENV
-
-/*
-	We can get JWK from PDC’s JWT service
-	Swagger: https://testenterprise.disasteraware.com/jwt/
-	Key Set: https://testenterprise.disasteraware.com/jwt/jwks.json
-*/
-
 function handleSigningKeyError(err, cb) {
   // If we didn't find a match, can't provide a key.
   if (err && err.name === 'SigningKeyNotFoundError') {
@@ -57,9 +48,10 @@ function passportJwtSecret(options) {
   };
 };
 
+// TODO
 // Fake verify, accept any authenticated user.
 function validateToken(jwt_payload, done) {
-  logger('Verify user:', jwt_payload);
+  console.log('Verify user:', jwt_payload);
 
   if (jwt_payload && jwt_payload.sub) {
     return done(null, jwt_payload);
@@ -69,6 +61,12 @@ function validateToken(jwt_payload, done) {
 };
 
 module.exports = function (app) {
+
+  /*
+    We can get JWK from PDC’s JWT service
+    Swagger: https://testenterprise.disasteraware.com/jwt/
+    Key Set: https://testenterprise.disasteraware.com/jwt/jwks.json
+  */
 
   app.set('JWKS_URI', process.env.JWKS_URI || "https://testenterprise.disasteraware.com/jwt/jwks.json");
   app.set('JWKS_AUDIENCE', process.env.JWKS_AUDIENCE || "urn:my-resource-server");

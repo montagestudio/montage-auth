@@ -19,6 +19,7 @@ app.set('APP_PORT', process.env.APP_PORT || 8080);
 app.set('APP_HOST', process.env.APP_HOST || 'localhost');
 app.set('APP_URL', process.env.APP_URL || (app.get('APP_SSL') ? 'https' : 'http') + '://' + app.get('APP_HOST') + ':' + app.get('APP_PORT'));
 
+// Middlewares
 require('./middleware/http')(app);
 require('./middleware/passport')(app);
 require('./middleware/jwks-rsa')(app);
