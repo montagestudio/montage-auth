@@ -4,8 +4,8 @@ language: node_js
 node_js:
 #  - "4"
 #  - "6"
-  - "7"
-#  - "8"
+#  - "7"
+  - "8"
 install:
   # Docker-ce install
   - >
@@ -30,11 +30,10 @@ before_script:
 #  - export DISPLAY=:99.0
 #  - sh -e /etc/init.d/xvfb start
   - export DOCKER_CLIENT_TIMEOUT=120
-  - docker swarm init
-  - docker build docker/montage-auth-service -t montagestudio/montage-auth-service:develop-SNAPSHOT
 script:
   - npm lint
-  - docker stack deploy -c montage-auth-stack.yaml montage-auth
+  - npm run build
+  - npm run start
   - sleep 50
   - npm run test
   - docker ps | grep -q montage-auth_montage-auth-service && echo "montage-auth_montage-auth-service is running"
