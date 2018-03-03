@@ -17,6 +17,7 @@ ADD certs/public.crt certs/public.crt
 
 # Then add source after install
 ADD index.js index.js
+ADD middleware middleware
 
 EXPOSE 8080
 
