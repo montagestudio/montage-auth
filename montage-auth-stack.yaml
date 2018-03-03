@@ -7,6 +7,12 @@ services:
     volumes:
       - ./:/home/montage-auth-service/public/:ro
     environment:
+      # Monatge Auth App
+      APP_SECRET: 'd1087d4bb3533a72d690efd990dfc65e9de097d982f60cbb33f52388befc1c86'
+      APP_SSL: 'true'
+      APP_PORT: '443'
+      APP_HOST: 'localhost'
+      APP_URL: 'http://locahost/'
       # JWT config
       JWKS_URI: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
       JWKS_AUDIENCE: 'TODO'

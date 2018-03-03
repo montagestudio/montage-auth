@@ -14,8 +14,8 @@ app.set('PUBLIC_PATH', process.env.PUBLIC_PATH || app.get('ROOT_PATH') + '/publi
 
 // App
 app.set('APP_SECRET', process.env.APP_SECRET || "montage-auth");
-app.set('APP_SSL', process.env.APP_SSL || true);
-app.set('APP_PORT', process.env.APP_PORT || 8080);
+app.set('APP_SSL', !!process.env.APP_SSL || true);
+app.set('APP_PORT', process.env.APP_PORT || '8080');
 app.set('APP_HOST', process.env.APP_HOST || 'localhost');
 app.set('APP_URL', process.env.APP_URL || (app.get('APP_SSL') ? 'https' : 'http') + '://' + app.get('APP_HOST') + ':' + app.get('APP_PORT'));
 

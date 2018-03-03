@@ -5,6 +5,14 @@
   "main": "index.js",
   "scripts": {
     "lint": "jshint .",
+    "start": "npm run start:swarm && npm run start:stack",
+    "start:swarm": "docker swarm init",
+    "start:stack": "docker stack deploy -c montage-auth-stack.yaml 'montage-auth'",
+    "start:doc": "open https://localhost/swagger.html",
+    "stop": "npm run stop:swarm",
+    "stop:swarm": "docker swarm leave --force",
+    "build": "npm run build:docker",
+    "build:docker": "docker build docker/montage-auth-service -t montagestudio/montage-auth-service:develop-SNAPSHOT",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,6 +24,7 @@
   },
   "homepage": "https://github.com/montagestudio/montage-auth#readme",
   "devDependencies": {
-    "jshint": "^2.9.5"
+    "jshint": "^2.9.5",
+    "open": "0.0.5"
   }
 }

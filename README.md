@@ -22,19 +22,25 @@ cd montage-auth
 #### Start and deploy
 
 ```
+# npm run build
 docker build docker/montage-auth-service -t montagestudio/montage-auth-service:develop-SNAPSHOT
 
-# OR using swarm
+# npm run start:swarm
 docker swarm init
+
+# npm run start:stack
 docker stack deploy -c montage-auth-stack.yaml 'montage-auth'
+
+# npm run start:doc
+open https://localhost/swagger.html
 ```
 
 #### Shutdown stack
 
 ```
+# npm run stop:swarm
 docker swarm leave --force
 ```
-
 
 ## Montage Auth REST API
 
