@@ -33,8 +33,10 @@ before_script:
   - docker swarm init
   - docker build docker/montage-auth-service -t montagestudio/montage-auth-service:develop-SNAPSHOT
 script:
+  - npm lint
   - docker stack deploy -c montage-auth-stack.yaml montage-auth
   - sleep 50
+  - npm run test
   - docker ps | grep -q montage-auth_montage-auth-service && echo "montage-auth_montage-auth-service is running"
 after_script:
   - docker stack rm montage-auth

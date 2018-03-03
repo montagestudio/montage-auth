@@ -77,39 +77,28 @@ module.exports = function (app) {
             twitterAction = req.params.twitterAction,
             twitterParams = req.query;
 
-        if (0) {
-            readFile(PUBLIC_PATH + '/logic/service/twitter-' + twitterObject + '-' + twitterAction + '.json').then(function (file) {
-                res.writeHead(200);
-                res.end(file);
-            }, function (err) {
-                next(err);
-            });
+        var accesToken = {
+            token: req.query.token || req.headers['authorization-token'],
+            secret: req.query.secret || req.headers['authorization-secret']
+        };
 
-        } else {
-
-            var accesToken = {
-                token: req.query.token || req.headers['authorization-token'],
-                secret: req.query.secret || req.headers['authorization-secret']
-            };
-
-            var client = new Twitter({
-                consumer_key: TWITTER_CONSUMER_KEY,
-                consumer_secret: TWITTER_CONSUMER_SECRET,
-                access_token_key: accesToken.token,
-                access_token_secret: accesToken.secret
-            });
-             
-            // TODO implement http2 push
-            // - https://blog.twitter.com/2008/what-does-rate-limit-exceeded-mean-updated
-            console.log('Twitter API call', twitterObject, twitterAction, twitterParams);
-            client.get(twitterObject + '/' + twitterAction, twitterParams, function(errors, tweets /*,response*/) {
-                if (errors) {
-                    next(errors[0]);
-                } else {
-                    res.json(tweets);
-              }
-            });
-        }
+        var client = new Twitter({
+            consumer_key: TWITTER_CONSUMER_KEY,
+            consumer_secret: TWITTER_CONSUMER_SECRET,
+            access_token_key: accesToken.token,
+            access_token_secret: accesToken.secret
+        });
+         
+        // TODO implement http2 push
+        // - https://blog.twitter.com/2008/what-does-rate-limit-exceeded-mean-updated
+        console.log('Twitter API call', twitterObject, twitterAction, twitterParams);
+        client.get(twitterObject + '/' + twitterAction, twitterParams, function(errors, tweets /*,response*/) {
+            if (errors) {
+                next(errors[0]);
+            } else {
+                res.json(tweets);
+          }
+        }); 
     });
 
 };

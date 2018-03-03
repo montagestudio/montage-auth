@@ -10,7 +10,8 @@ var https = require('spdy');
 
 module.exports = function (app) {
 
-  var APP_PORT = app.get('APP_PORT'),  
+  var APP_PORT = app.get('APP_PORT'), 
+      APP_URL = app.get('APP_URL'),  
       APP_SSL = app.get('APP_SSL'),
       CERT_PATH = app.get('ROOT_PATH') + '/certs/',
       PUBLIC_PATH = app.get('PUBLIC_PATH');
@@ -52,4 +53,4 @@ module.exports = function (app) {
     app.listen(APP_PORT);
     console.log('(http) Listening on port: ' + APP_PORT + '.');
   } 
-}
+};

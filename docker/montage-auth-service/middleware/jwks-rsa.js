@@ -14,7 +14,7 @@ function handleSigningKeyError(err, cb) {
   if (err) {
     return cb(err);
   }
-};
+}
 
 function passportJwtSecret(options) {
   if (options === null || options === undefined) {
@@ -27,7 +27,7 @@ function passportJwtSecret(options) {
   return function secretProvider(req, rawJwtToken, cb) {
     var decoded = jwt.decode(rawJwtToken, { 
     	complete: true 
-    })
+    });
 
     // Only RS256 is supported.
     // TODO WTF ?
@@ -38,7 +38,7 @@ function passportJwtSecret(options) {
     client.getSigningKey(decoded.header.kid, function (err, key) {
       if (err) {
         return onError(err, function (newError) {
-        	cb(newError, null)	
+        	cb(newError, null);
         });
       }
 
@@ -46,7 +46,7 @@ function passportJwtSecret(options) {
       return cb(null, key.publicKey || key.rsaPublicKey);
     });
   };
-};
+}
 
 // TODO
 // Fake verify, accept any authenticated user.
@@ -58,7 +58,7 @@ function validateToken(jwt_payload, done) {
   }
 
   return done(null, false);
-};
+}
 
 module.exports = function (app) {
 
@@ -95,4 +95,4 @@ module.exports = function (app) {
 	  },
 	  validateToken)
 	);
-}
+};

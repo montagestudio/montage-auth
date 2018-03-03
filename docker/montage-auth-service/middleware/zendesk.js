@@ -16,7 +16,7 @@ module.exports = function (app) {
 
     // Twitter middleware
     var APP_URL = app.get('APP_URL'),
-        ZENDESK_SUBDOMAIN = app.get('ZENDESK_SUBDOMAIN')
+        ZENDESK_SUBDOMAIN = app.get('ZENDESK_SUBDOMAIN'),
         ZENDESK_CLIENT_ID = app.get('ZENDESK_CLIENT_ID'),
         ZENDESK_CLIENT_SECRET = app.get('ZENDESK_CLIENT_SECRET');
 
@@ -79,6 +79,11 @@ module.exports = function (app) {
 
     // Zendesk token api
     var requireJWTAuth = passport.authenticate('jwt', { session: false });
+
+    var ZENDESK_TOKEN_SECRET = app.get('ZENDESK_TOKEN_SECRET'),
+        ZENDESK_TOKEN_ALGORITHM = app.get('ZENDESK_TOKEN_ALGORITHM'),
+        ZENDESK_TOKEN_DURATION = app.get('ZENDESK_TOKEN_DURATION');
+
     app.get('/api/zendesk/token', requireJWTAuth, function (req, res, next) {
 
         // TODO 
@@ -107,7 +112,6 @@ module.exports = function (app) {
 
         var user = req.user || {
             "app": APP_URL,
-            "name": "Jesse Selitham",
             "name": "Jesse Selitham",
             "email": "jesse.selitham@kaazing.com"
         };

@@ -1,0 +1,35 @@
+{
+    "node": true,
+    "bitwise": true,
+    "camelcase": false,
+    "curly": true,
+    "eqeqeq": true,
+    "forin": true,
+    "noarg": true,
+    "noempty": true,
+    "nonew": true,
+    "undef": true,
+    "unused": false,
+    "trailing": true,
+    "indent": 4,
+    "boss": true,
+    "eqnull": true,
+    "browser": true,
+    "globals": {
+        "CustomEvent": true,
+        "WebSocket": false,
+
+        "require": false,
+        "exports": false,
+        "global": false,
+
+        "WeakMap": true,
+        "Map": true,
+        "Set": true,
+
+        "window": true,
+        "document": true,
+
+        "console": false
+    }
+}
