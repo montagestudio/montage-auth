@@ -1,0 +1,112 @@
+swagger: "2.0"
+info:
+  description: |
+    This is an external Montage Auth Server REST API documentation. 
+  version: "1.0.0"
+  title: "Montage Auth REST API"
+  contact:
+    email: "support@example.com"
+host: "local.example.com"
+basePath: "/"
+schemes:
+- "https"
+paths:
+  /api/auth/twitter:
+    get:
+      tags:
+        - "twitter"
+      responses:
+        302:
+          description: "Successful operation"
+    post:
+      tags:
+        - "twitter"
+      responses:
+        302:
+          description: "Successful operation"
+  /api/auth/twitter/callback:
+    get:
+      tags:
+        - "twitter"
+      parameters:
+      responses:
+        200:
+          description: "Successful operation"
+
+  /api/auth/:twitterObject/:twitterAction:
+    get:
+      tags:
+        - "twitter"
+      parameters:
+      responses:
+        200:
+          description: "Successful operation"
+  /api/auth/zendesk:
+    get:
+      tags:
+        - "zendesk"
+      responses:
+        302:
+          description: "Successful operation"
+    post:
+      tags:
+        - "zendesk"
+      responses:
+        302:
+          description: "Successful operation"
+  /api/auth/zendesk/callback:
+    get:
+      tags:
+        - "zendesk"
+      parameters:
+      responses:
+        200:
+          description: "Successful operation"
+  /api/zendesk/token:
+    get:
+      security:
+        - bearerAuth
+      tags:
+        - "zendesk"
+      parameters:
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/ZendeskToken"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "calls per hour allowed by the user"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC when token expires"
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: Requests should pass an Authorization header with a Bearer token.
+security:
+  - requestedWithXHR: []
+  - bearerAuth: []
+  - apiKey: []
+  - xsrfToken: []
+definitions:
+  ZendeskToken:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+        format: "string"
+components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+externalDocs:
+  description: "Find out more about Montage Auth"
+  url: "https://example.com"
