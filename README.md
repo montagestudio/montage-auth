@@ -48,6 +48,17 @@ See swagger Documentation: [Montage Auth REST API swagger.yml](./docker/montage-
 
 ## Troubleshooting & Useful Tools
 
+### TLTR;
+```
+git clone git@github.com:montagestudio/montage-auth.git
+cd montage-auth
+npm i
+npm run build
+npm run start
+sleep 20
+npm run start:doc
+```
+
 ### Docker visualizer 
 
 ```
