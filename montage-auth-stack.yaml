@@ -1,0 +1,23 @@
+version: "3.1"
+
+services:
+  montage-auth-service:
+    restart: always
+    image: montagestudio/montage-auth-service:develop-SNAPSHOT
+    volumes:
+      - ./:/home/montage-auth-service/public/:ro
+    environment:
+      # JWT config
+      JWKS_URI: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
+      JWKS_AUDIENCE: 'TODO'
+      JWKS_ISSUER: 'TODO'
+      # Zendesk config
+      ZENDESK_TOKEN_SECRET: '9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj'
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - back
+
+networks:
+  back:

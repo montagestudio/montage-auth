@@ -1,0 +1,65 @@
+swagger: "2.0"
+info:
+  description: |
+    This is an external Montage Auth Server REST API documentation. 
+  version: "1.0.0"
+  title: "Montage Auth REST API"
+  contact:
+    email: "support@example.com"
+host: "local.example.com"
+basePath: "/"
+tags:
+- name: "auth"
+  description: "Operations about auth"
+schemes:
+- "https"
+paths:
+  /auth/{provider}:
+    parameters:
+      - name: "provider"
+        in: "path"
+        description: "Name of provider to use"
+        required: true
+        type: "string"
+        format: "string"
+    get:
+      tags:
+        - "provider"
+      responses:
+        302:
+          description: "Successful operation"
+    post:
+      tags:
+        - "provider"
+      responses:
+        302:
+          description: "Successful operation"
+  /auth/{provider}/callback:
+    get:
+      tags:
+        - "provider"
+      parameters:
+      - name: "provider"
+        in: "path"
+        description: "Name of provider to use"
+        required: true
+        type: "string"
+        format: "string"
+      responses:
+        200:
+          description: "Successful operation"
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: Requests should pass an Authorization header with a Bearer token.
+security:
+  - requestedWithXHR: []
+  - bearerAuth: []
+  - apiKey: []
+  - xsrfToken: []
+definitions:
+externalDocs:
+  description: "Find out more about Montage Auth"
+  url: "https://example.com"

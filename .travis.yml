@@ -1,0 +1,41 @@
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+#  - "4"
+#  - "6"
+  - "7"
+#  - "8"
+install:
+  # Docker-ce install
+  - >
+    sudo apt-get update
+  - sudo apt-get install --assume-yes apt-transport-https ca-certificates curl software-properties-common
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get install --assume-yes docker-ce
+  # NodeJS Install
+  - npm config set loglevel warn
+  - "npm install"
+  # Add self-signed cert to System in case build need it
+  - sudo cp ./docker/montage-auth-service/certs/public.crt /usr/local/share/ca-certificates/public.crt
+  - sudo chmod 644 /usr/local/share/ca-certificates/public.crt
+  # Update public certs
+  - sudo update-ca-certificates --verbose
+addons:
+  hosts:
+    - data-accelerator.example.com
+before_script:
+#  - export DISPLAY=:99.0
+#  - sh -e /etc/init.d/xvfb start
+  - export DOCKER_CLIENT_TIMEOUT=120
+  - docker swarm init
+  - docker build docker/montage-auth-service -t montagestudio/montage-auth-service:develop-SNAPSHOT
+script:
+  - docker stack deploy -c montage-auth-stack.yaml montage-auth
+  - sleep 50
+  - npm test
+  - docker ps | grep -q montage-auth
+after_script:
+  - docker stack rm montage-auth
