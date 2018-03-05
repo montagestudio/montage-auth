@@ -94,7 +94,7 @@ docker login
  docker tag montagestudio/montage-auth-service:stable $DOCKER_ID_USER/montagestudio/montage-auth-service:stable
 
 # Push Image
-docker push $DOCKER_ID_USER/my_image
+docker push $DOCKER_ID_USER/montagestudio/montage-auth-service:stable
 ```
 
 ### Repository access
