@@ -91,7 +91,7 @@ export DOCKER_ID_USER="username"
 docker login
 
 # Tag Image
- docker tag montagestudio/montage-auth-service:stable $DOCKER_ID_USER/montagestudio/montage-auth-service:stable
+docker tag montagestudio/montage-auth-service:stable $DOCKER_ID_USER/montagestudio/montage-auth-service:stable
 
 # Push Image
 docker push $DOCKER_ID_USER/montagestudio/montage-auth-service:stable
