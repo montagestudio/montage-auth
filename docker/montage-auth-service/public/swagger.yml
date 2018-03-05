@@ -6,12 +6,12 @@ info:
   title: "Montage Auth REST API"
   contact:
     email: "support@example.com"
-host: "local.example.com"
+host: "localhost:8080"
 basePath: "/"
 schemes:
 - "https"
 paths:
-  /api/auth/twitter:
+  /auth/twitter:
     get:
       tags:
         - "twitter"
@@ -24,7 +24,7 @@ paths:
       responses:
         302:
           description: "Successful operation"
-  /api/auth/twitter/callback:
+  /auth/twitter/callback:
     get:
       tags:
         - "twitter"
@@ -33,7 +33,7 @@ paths:
         200:
           description: "Successful operation"
 
-  /api/auth/:twitterObject/:twitterAction:
+  /api/twitter/:twitterObject/:twitterAction:
     get:
       tags:
         - "twitter"
@@ -41,7 +41,14 @@ paths:
       responses:
         200:
           description: "Successful operation"
-  /api/auth/zendesk:
+  /auth/jwtks:
+    get:
+      tags:
+        - "jwtks"
+      responses:
+        200:
+          description: "Successful operation"
+  /auth/zendesk:
     get:
       tags:
         - "zendesk"
@@ -54,7 +61,7 @@ paths:
       responses:
         302:
           description: "Successful operation"
-  /api/auth/zendesk/callback:
+  /auth/zendesk/callback:
     get:
       tags:
         - "zendesk"

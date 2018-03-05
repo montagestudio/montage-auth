@@ -22,7 +22,7 @@ app.set('APP_URL', process.env.APP_URL || (app.get('APP_SSL') ? 'https' : 'http'
 // Middlewares
 require('./middleware/http')(app);
 require('./middleware/passport')(app);
-require('./middleware/jwks-rsa')(app);
+require('./middleware/jwks')(app);
 require('./middleware/twitter')(app);
 require('./middleware/zendesk')(app);
 

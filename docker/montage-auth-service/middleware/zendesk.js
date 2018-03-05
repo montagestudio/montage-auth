@@ -84,21 +84,16 @@ module.exports = function (app) {
         ZENDESK_TOKEN_ALGORITHM = app.get('ZENDESK_TOKEN_ALGORITHM'),
         ZENDESK_TOKEN_DURATION = app.get('ZENDESK_TOKEN_DURATION');
 
+    // - https://support.zendesk.com/hc/en-us/articles/203663816 
+    // - https://support.zendesk.com/hc/en-us/articles/204279616-Anatomy-of-a-JWT-request
+
     app.get('/api/zendesk/token', requireJWTAuth, function (req, res, next) {
 
-        // TODO 
-        // - get current user
-        // - forge zendek token
-        // - jit uuid
-
-        // LINKS:
-        // - https://support.zendesk.com/hc/en-us/articles/203663816 
-        // - https://support.zendesk.com/hc/en-us/articles/204279616-Anatomy-of-a-JWT-request
-
+        var user = req.user;
         /*
         Here's an example claims set for the JWT:
         // JWT must be HS256 I believe.
-        {
+        user = {
             "iss": "Online JWT Builder",
             "iat": 1520029662,
             "exp": 1551548588,
@@ -110,14 +105,7 @@ module.exports = function (app) {
         }
         */
 
-        var user = req.user || {
-            "app": APP_URL,
-            "name": "Jesse Selitham",
-            "email": "jesse.selitham@kaazing.com"
-        };
-
         var token = jwt.sign({
-            //"jti": "123423423412346",
             aud: user.app,
             sub: user.email,
             name: user.name,
@@ -128,7 +116,8 @@ module.exports = function (app) {
         });
 
         res.json({
-            token: token
+            token: token,
+            url: "https://" + ZENDESK_SUBDOMAIN + ".zendesk.com/access/jwt?jwt=" + encodeURIComponent(token)
         });
 
     });
