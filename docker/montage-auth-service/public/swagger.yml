@@ -110,6 +110,9 @@ definitions:
       token:
         type: "string"
         format: "string"
+      url:
+        type: "string"
+        format: "string"
 components:
   responses:
     UnauthorizedError:

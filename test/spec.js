@@ -28,15 +28,15 @@ describe("/auth/jwks", function() {
         var req = https.request(options, function(res) {
             assert.equal(res.statusCode, 200);
 
-            var data = '';
-            res.on('data', function(frame) {
-                data += frame;
+            var response = '';
+            res.on('data', function(data) {
+                response += data;
             });
 
             res.on('end', function() {
-                assert.equal(typeof data, "string");
-                assert.equal(data.length > 0, true);
-                rawJwtToken = JSON.parse(data);
+                assert.equal(typeof response, "string");
+                assert.equal(response.length > 0, true);
+                rawJwtToken = JSON.parse(response);
                 assert.equal(typeof rawJwtToken.accessToken, 'string');
                 assert.equal(typeof rawJwtToken.refreshToken, 'string');
                 done();
@@ -118,6 +118,9 @@ describe("/api/zendesk/token", function() {
             res.on('end', function() {
                 assert.equal(typeof response, "string");
                 assert.equal(response.length > 0, true);
+                response = JSON.parse(response);
+                assert.equal(typeof response.token, 'string');
+                assert.equal(typeof response.url, 'string');
                 done();
             });
 
