@@ -51,19 +51,19 @@ function getSigningKey(jwksUrl, kid) {
                 response.keys.length === 0 || 
                   !Array.isArray(response.keys)
           ) {
-            reject('No valid keys found for ' + jwksUrl)
+            reject('No valid keys found for ' + jwksUrl);
           }
 
           // Lookup for match
           var signingKey = response.keys.find(function (key) {
-            return key.kid == kid;
+            return key.kid === kid;
           });
           
           // If match convert to pem and resolve
           if (signingKey) {
-              resolve(jwkToPem(signingKey))
+              resolve(jwkToPem(signingKey));
           } else {
-            reject('No kid matching key found.')
+            reject('No kid matching key found.');
           }
 
           return signingKey;

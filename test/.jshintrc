@@ -1,7 +1,7 @@
 {
-    "node": true,
+    "mocha": true,
     "bitwise": true,
-    "camelcase": false,
+    "camelcase": true,
     "curly": true,
     "eqeqeq": true,
     "forin": true,
@@ -23,7 +23,6 @@
         "exports": false,
         "global": false,
 
-        "Promise": false,
         "WeakMap": true,
         "Map": true,
         "Set": true,

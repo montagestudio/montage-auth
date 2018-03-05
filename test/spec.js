@@ -1,3 +1,5 @@
+/* globals: describe it*/
+
 var assert = require('assert');
 var https = require('https');
 
