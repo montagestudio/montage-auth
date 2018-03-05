@@ -84,17 +84,25 @@ git submodule update --init --recursive
 
 ```
 # Build imnage
-docker build docker/montage-auth-service -t montagestudio/montage-auth-service:stable
+docker build docker/montage-auth-service -t montage-auth-service
 
 # Login
 export DOCKER_ID_USER="username"
 docker login
 
 # Tag Image
-docker tag montagestudio/montage-auth-service:stable $DOCKER_ID_USER/montagestudio/montage-auth-service:stable
+docker tag "montage-auth-service" "$DOCKER_ID_USER/montage-auth-service"
 
 # Push Image
-docker push $DOCKER_ID_USER/my_image
+docker push $DOCKER_ID_USER/montage-auth-service
+
+# Pull Image
+docker pull $DOCKER_ID_USER/montage-auth-service:latest
+
+# Run Image
+docker run -p 8080:8080 montage-auth-service
+
+# Then open https://localhost:8080/swagger.html to check service.
 ```
 
 ### Repository access
