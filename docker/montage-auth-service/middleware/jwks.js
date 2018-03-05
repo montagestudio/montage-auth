@@ -173,6 +173,4 @@ module.exports = function (app) {
     });
 };
 
-
-module.exports.getSigningKey = getSigningKey;
 module.exports.getSigningKey = getSigningKey;
