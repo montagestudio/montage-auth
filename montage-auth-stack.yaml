@@ -23,7 +23,6 @@ services:
         condition: on-failure
 
   montage-auth-service:
-    restart: always
     image: montagestudio/montage-auth-service:develop-SNAPSHOT
     volumes:
       - ./:/home/montage-auth-service/public/:ro
@@ -57,7 +56,7 @@ services:
   visualizer:
     image: dockersamples/visualizer:stable
     ports:
-      - "80:8080"
+      - "8081:8081"
     stop_grace_period: 1m30s
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -65,7 +64,7 @@ services:
       placement:
         constraints: [node.role==manager]  
       labels:
-        - "traefik.port=80"
+        - "traefik.port=8081"
         - "traefik.docker.network=local-aurora-montagestudio-com"
         - "traefik.frontend.rule=Host:visualizer.local-aurora.montagestudio-com"
         - "traefik.backend.loadbalancer.sticky=true"
