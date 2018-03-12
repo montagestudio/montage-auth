@@ -59,6 +59,33 @@ sleep 20
 npm run start:doc
 ```
 
+### ENV config
+
+```
+# Montage Auth App
+APP_SECRET: '***'
+APP_SSL: 'false'
+APP_PORT: '80'
+APP_HOST: 'auth.local-aurora.montagestudio.com'
+APP_URL: 'http://auth.local-aurora.montagestudio.com'
+
+# JWT config
+JWKS_URI: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
+JWKS_ISSUER: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
+
+# Zendesk config
+ZENDESK_SUBDOMAIN: disasteraware
+ZENDESK_CLIENT_ID: disasteraware
+ZENDESK_CLIENT_SECRET: '***'
+ZENDESK_TOKEN_SECRET: '***'
+ZENDESK_TOKEN_ALGORITHM: 'HS256'
+ZENDESK_TOKEN_DURATION: '1h'
+
+# Twitter
+TWITTER_CONSUMER_KEY: 'YYmrT8z8xBsAMBWJeqhhmnxXD'
+TWITTER_CONSUMER_SECRET: 'KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi'
+```
+
 ### Docker visualizer 
 
 ```
