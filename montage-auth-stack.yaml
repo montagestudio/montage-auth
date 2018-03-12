@@ -31,7 +31,7 @@ services:
       APP_SECRET: 'd1087d4bb3533a72d690efd990dfc65e9de097d982f60cbb33f52388befc1c86'
       APP_SSL: 'false'
       APP_PORT: '80'
-      APP_HOST: 'localhost'
+      APP_HOST: 'auth.local-aurora.montagestudio.com'
       APP_URL: 'http://auth.local-aurora.montagestudio.com'
       # JWT config
       JWKS_URI: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
@@ -47,7 +47,7 @@ services:
       labels:
         - "traefik.port=80"
         - "traefik.docker.network=local-aurora-montagestudio-com"
-        - "traefik.frontend.rule=Host:auth.local-aurora.montagestudio-com"
+        - "traefik.frontend.rule=Host:auth.local-aurora.montagestudio.com"
         - "traefik.backend.loadbalancer.sticky=true"
 
   visualizer:
@@ -55,13 +55,15 @@ services:
     stop_grace_period: 1m30s
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - local-aurora-montagestudio-com
     deploy:
       placement:
         constraints: [node.role==manager]  
       labels:
-        - "traefik.port=8081"
+        - "traefik.port=8080"
         - "traefik.docker.network=local-aurora-montagestudio-com"
-        - "traefik.frontend.rule=Host:visualizer.local-aurora.montagestudio-com"
+        - "traefik.frontend.rule=Host:visualizer.local-aurora.montagestudio.com"
         - "traefik.backend.loadbalancer.sticky=true"
 
 networks:
