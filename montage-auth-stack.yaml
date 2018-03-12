@@ -1,6 +1,27 @@
 version: "3.1"
 
 services:
+  traefik:
+    image: traefik
+    command: --web --docker --docker.swarmmode --docker.watch --docker.domain=local-aurora.montagestudio.com --logLevel=DEBUG
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - local-aurora-montagestudio-com
+    deploy:
+      replicas: 3
+      placement:
+        constraints: [node.role==manager]
+      restart_policy:
+        condition: on-failure
+
   montage-auth-service:
     restart: always
     image: montagestudio/montage-auth-service:develop-SNAPSHOT
@@ -9,20 +30,46 @@ services:
     environment:
       # Monatge Auth App
       APP_SECRET: 'd1087d4bb3533a72d690efd990dfc65e9de097d982f60cbb33f52388befc1c86'
-      APP_SSL: 'true'
-      APP_PORT: '443'
+      APP_SSL: 'false'
+      APP_PORT: '80'
       APP_HOST: 'localhost'
-      APP_URL: 'https://locahost'
+      APP_URL: 'http://auth.local-aurora.montagestudio.com'
       # JWT config
       JWKS_URI: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
       JWKS_ISSUER: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
       # Zendesk config
       ZENDESK_TOKEN_SECRET: '9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj'
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     networks:
-      - back
+      - local-aurora-montagestudio-com
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.port=80"
+        - "traefik.docker.network=local-aurora-montagestudio-com"
+        - "traefik.frontend.rule=Host:auth.local-aurora.montagestudio-com"
+        - "traefik.backend.loadbalancer.sticky=true"
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "80:8080"
+    stop_grace_period: 1m30s
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role==manager]  
+      labels:
+        - "traefik.port=80"
+        - "traefik.docker.network=local-aurora-montagestudio-com"
+        - "traefik.frontend.rule=Host:visualizer.local-aurora.montagestudio-com"
+        - "traefik.backend.loadbalancer.sticky=true"
 
 networks:
-  back:
+  local-aurora-montagestudio-com:
+    driver: overlay
