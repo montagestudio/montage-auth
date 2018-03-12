@@ -38,9 +38,6 @@ services:
       JWKS_ISSUER: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
       # Zendesk config
       ZENDESK_TOKEN_SECRET: '9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj'
-    ports:
-      - "80:80"
-      - "443:443"
     networks:
       - local-aurora-montagestudio-com
     deploy:
@@ -55,8 +52,6 @@ services:
 
   visualizer:
     image: dockersamples/visualizer:stable
-    ports:
-      - "8081:8081"
     stop_grace_period: 1m30s
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
