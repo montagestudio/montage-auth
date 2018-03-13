@@ -2,16 +2,17 @@ swagger: "2.0"
 info:
   description: |
     This is an external Montage Auth Server REST API documentation. 
-  version: "1.0.0"
+  version: "0.0.1"
   title: "Montage Auth REST API"
   contact:
-    email: "support@example.com"
-host: "localhost:8080"
-basePath: "/"
+    email: "support@montagestudio.com"
+host: ""
+basePath: "/auth-service/"
 schemes:
+- "http"
 - "https"
 paths:
-  /auth/twitter:
+  /auth/twitter:  
     get:
       tags:
         - "twitter"
@@ -92,6 +93,18 @@ paths:
               description: "date in UTC when token expires"
         401:
           $ref: '#/components/responses/UnauthorizedError'
+  /push/validate:
+    get:
+      tags:
+        - "push"
+      parameters:
+      responses:
+  /push/register:
+    post:
+      tags:
+        - "push"
+      parameters:
+      responses:
 securityDefinitions:
   bearerAuth:
     type: apiKey
@@ -117,6 +130,3 @@ components:
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
-externalDocs:
-  description: "Find out more about Montage Auth"
-  url: "https://example.com"
