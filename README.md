@@ -44,7 +44,7 @@ docker swarm leave --force
 
 ## Montage Auth REST API
 
-See swagger Documentation: [Montage Auth REST API swagger.yml](./docker/montage-auth-service/swagger.yml).
+See swagger Documentation: [Montage Auth REST API swagger.yml](./docker/montage-auth-service/public/swagger.yml).
 
 ## Troubleshooting & Useful Tools
 
