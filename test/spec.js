@@ -40,6 +40,8 @@ describe("/auth/jwks", function() {
                 assert.equal(typeof rawJwtToken.accessToken, 'string');
                 assert.equal(typeof rawJwtToken.refreshToken, 'string');
                 done();
+
+                console.log(rawJwtToken);
             });
 
         });
@@ -90,15 +92,14 @@ describe("/auth/jwks", function() {
     });
 });
 
-
 describe("/api/zendesk/token", function() {
 
     it("generate zendesk provider token", function(done) {
-
+        var email = 'robot@example.com';
         var options = {
             hostname: 'localhost',
             port: 8080,
-            path: '/api/zendesk/token',
+            path: '/api/zendesk/token?email=' + encodeURIComponent(email),
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -122,6 +123,7 @@ describe("/api/zendesk/token", function() {
                 assert.equal(typeof response.token, 'string');
                 assert.equal(typeof response.url, 'string');
                 done();
+                console.log(response);
             });
 
         });

@@ -18,10 +18,10 @@ function handleSigningKeyError(err, cb) {
   }
 }
 
-function getSigningKey(jwksUrl, kid) {
+function fetchSigningKey(jwksUrl, kid) {
   return new Promise(function (resolve, reject) {
-      var jwksUri = url.parse(jwksUrl);     
-      var req = https.request({
+    var jwksUri = url.parse(jwksUrl);
+    var req = https.request({
           hostname: jwksUri.hostname,
           port: jwksUri.port,
           path: jwksUri.path,
@@ -38,11 +38,13 @@ function getSigningKey(jwksUrl, kid) {
         });
 
         res.on('end', function() {
+
           // Parse response
           try {
             response =  JSON.parse(response);
           } catch (err) {
             reject(err);
+            return;
           }
 
           // Validate response
@@ -52,6 +54,7 @@ function getSigningKey(jwksUrl, kid) {
                   !Array.isArray(response.keys)
           ) {
             reject('No valid keys found for ' + jwksUrl);
+            return;
           }
 
           // Lookup for match
@@ -61,18 +64,51 @@ function getSigningKey(jwksUrl, kid) {
           
           // If match convert to pem and resolve
           if (signingKey) {
-              resolve(jwkToPem(signingKey));
+            resolve(jwkToPem(signingKey));
           } else {
             reject('No kid matching key found.');
           }
-
-          return signingKey;
         });
       });
 
       req.on('error', reject);
 
       req.end();
+  });
+}
+
+var keysCache = {};
+var keysCacheDuration = 60 * 5 * 1000; 
+
+function getSigningKey(jwksUrl, kid) {
+  return new Promise(function (resolve, reject) {
+      var jwksUri = url.parse(jwksUrl);
+
+      // Look into cache and if not expired
+      if (keysCache.hasOwnProperty(jwksUri.href)) {
+        var keyCache = keysCache[jwksUri.href];
+
+        // Check expired
+        if ((Date.now() - keyCache.date) < keysCacheDuration) {
+          resolve(keysCache[jwksUri.href].key);
+          return;
+
+        // Clear expired
+        } else {
+          delete keysCache[jwksUri.href];
+        }
+      }
+
+      // Other fetch and cache
+      fetchSigningKey(jwksUrl, kid).then(function (signingKey) {
+        // Put in and resolve 
+        (keysCache[jwksUri.href] = {
+          date: Date.now(),
+          key: signingKey
+        });
+
+        resolve(keysCache[jwksUri.href].key);
+      }, reject);
   });
 }
 
@@ -112,7 +148,9 @@ function passportJwtSecret(options) {
 
     getSigningKey(options.jwksUrl, decoded.header.kid).then(function (key) {
       return next(null, key);
-    }, next);
+    }, function (err) {
+      next(err);
+    });
   };
 }
 
@@ -126,6 +164,43 @@ function validateToken(jwtPayload, done) {
   return done(null, false);
 }
 
+function getUserProfile(jwksProfileUrl, JWTtoken) {
+  return new Promise(function (resolve, reject) {
+    var jwksProfileUri = url.parse(jwksProfileUrl);
+    var req = https.request({
+          hostname: jwksProfileUri.hostname,
+          port: jwksProfileUri.port,
+          path: jwksProfileUri.path,
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + JWTtoken
+          },
+          rejectUnauthorized: false
+      }, function(res) {
+
+        var response = '';
+        res.on('data', function(data) {
+            response += data;
+        });
+
+        res.on('end', function() {
+          // Parse response
+          try {
+            response =  JSON.parse(response);
+            resolve(response);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      });
+
+      req.on('error', reject);
+
+      req.end();
+  });
+}
+
 module.exports = function (app) {
 
   /*
@@ -135,6 +210,7 @@ module.exports = function (app) {
   */
 
   app.set('JWKS_URI', process.env.JWKS_URI || "https://testenterprise.disasteraware.com/jwt/jwks.json");
+  app.set('JWKS_PROFILE_URI', process.env.JWKS_PROFILE_URI || "https://testenterprise.disasteraware.com/command/rest/user");
   app.set('JWKS_ISSUER', process.env.JWKS_ISSUER || "https://testenterprise.disasteraware.com/jwt/jwks.json");
   app.set('JWKS_AUDIENCE', process.env.JWKS_AUDIENCE || "");
   app.set('JWKS_ALGORITHM', process.env.JWKS_ALGORITHM || "RS512");
@@ -170,6 +246,16 @@ module.exports = function (app) {
               res.send(req.user);
           }
         });
+    });
+
+
+    // Zendesk token api
+    var requireJWTAuth = passport.authenticate('jwt', { session: false });
+
+    app.get('/api/jwtks/profile', requireJWTAuth, function (req, res, next) {
+      getUserProfile().then(function (profile) {
+        res.json(profile);
+      }, next);
     });
 };
 

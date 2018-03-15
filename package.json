@@ -28,5 +28,8 @@
     "open": "0.0.5",
     "assert": "^1.4.1",
     "mocha": "^5.0.1"
+  },
+  "dependencies": {
+    "uuid": "^3.2.1"
   }
 }

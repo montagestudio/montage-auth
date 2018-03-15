@@ -7,10 +7,10 @@ info:
   contact:
     email: "support@montagestudio.com"
 host: ""
-basePath: "/auth-service/"
+basePath: "/"
 schemes:
-- "http"
 - "https"
+- "http"
 paths:
   /auth/twitter:  
     get:
@@ -29,7 +29,6 @@ paths:
     get:
       tags:
         - "twitter"
-      parameters:
       responses:
         200:
           description: "Successful operation"
@@ -38,7 +37,6 @@ paths:
     get:
       tags:
         - "twitter"
-      parameters:
       responses:
         200:
           description: "Successful operation"
@@ -66,17 +64,20 @@ paths:
     get:
       tags:
         - "zendesk"
-      parameters:
       responses:
         200:
           description: "Successful operation"
   /api/zendesk/token:
     get:
-      security:
-        - bearerAuth
       tags:
         - "zendesk"
       parameters:
+      - name: "email"
+        in: "query"
+        description: "User email to authenticate"
+        required: true
+        type: "string"
+        format: "string"
       responses:
         201:
           description: "Successful operation"
@@ -93,18 +94,6 @@ paths:
               description: "date in UTC when token expires"
         401:
           $ref: '#/components/responses/UnauthorizedError'
-  /push/validate:
-    get:
-      tags:
-        - "push"
-      parameters:
-      responses:
-  /push/register:
-    post:
-      tags:
-        - "push"
-      parameters:
-      responses:
 securityDefinitions:
   bearerAuth:
     type: apiKey

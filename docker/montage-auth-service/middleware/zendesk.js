@@ -2,12 +2,13 @@
 var passport = require('passport');
 var ZendeskStrategy = require('passport-zendesk').Strategy;
 var jwt = require('jsonwebtoken');
+var uuidv4 = require('uuid/v4');
 
 module.exports = function (app) {
 
     // Set default env
-    app.set('ZENDESK_CLIENT_ID', process.env.ZENDESK_CLIENT_ID || "disasteraware");
-    app.set('ZENDESK_SUBDOMAIN', process.env.ZENDESK_SUBDOMAIN || process.env.ZENDESK_CLIENT_ID || "disasteraware");
+    app.set('ZENDESK_CLIENT_ID', process.env.ZENDESK_CLIENT_ID || "kaazingsupport1505261284");
+    app.set('ZENDESK_SUBDOMAIN', process.env.ZENDESK_SUBDOMAIN || process.env.ZENDESK_CLIENT_ID || "kaazingsupport1505261284");
     app.set('ZENDESK_CLIENT_SECRET', process.env.ZENDESK_CLIENT_SECRET || "9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj");
 
     app.set('ZENDESK_TOKEN_SECRET', process.env.ZENDESK_TOKEN_ALGORITHM || "9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj");
@@ -105,25 +106,35 @@ module.exports = function (app) {
         */
 
         // TODO fetch email from endpoint if missing.
-        if (!user.email) {
-            throw new Error('Missing Email');
+        if (!req.query.email) {
+            throw new Error('Missing email');
         }
 
-        var token = jwt.sign({
+        var payload = {
+            jti: uuidv4(),
+            iat: Date.now(),
             aud: user.app,
-            sub: user.email,
+            sub: user.name,
             name: user.name,
-            email: user.email,
-            external_id: user.name,
-        }, ZENDESK_TOKEN_SECRET, { 
+            email: req.query.email,
+            external_id: user.name
+        };
+
+        var token = jwt.sign(payload, ZENDESK_TOKEN_SECRET, { 
             algorithm: ZENDESK_TOKEN_ALGORITHM,
             expiresIn: ZENDESK_TOKEN_DURATION
         });
 
-        res.json({
+        var result = {
             token: token,
             url: "https://" + ZENDESK_SUBDOMAIN + ".zendesk.com/access/jwt?jwt=" + encodeURIComponent(token)
-        });
+        };
+
+        if (req.query.showPayload) {
+            result.payload = payload;
+        }
+
+        res.json(result);
 
     });
 };
