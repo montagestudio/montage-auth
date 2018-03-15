@@ -6,8 +6,8 @@ var jwt = require('jsonwebtoken');
 module.exports = function (app) {
 
     // Set default env
-    app.set('ZENDESK_SUBDOMAIN', process.env.ZENDESK_SUBDOMAIN || "disateraware");
-    app.set('ZENDESK_CLIENT_ID', process.env.ZENDESK_CLIENT_ID || "disateraware");
+    app.set('ZENDESK_CLIENT_ID', process.env.ZENDESK_CLIENT_ID || "disasteraware");
+    app.set('ZENDESK_SUBDOMAIN', process.env.ZENDESK_SUBDOMAIN || process.env.ZENDESK_CLIENT_ID || "disasteraware");
     app.set('ZENDESK_CLIENT_SECRET', process.env.ZENDESK_CLIENT_SECRET || "9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj");
 
     app.set('ZENDESK_TOKEN_SECRET', process.env.ZENDESK_TOKEN_ALGORITHM || "9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj");
@@ -97,19 +97,24 @@ module.exports = function (app) {
             "iss": "Online JWT Builder",
             "iat": 1520029662,
             "exp": 1551548588,
-            "aud": "www.example.com",
-            "sub": "jrocket@example.com",
+            "sub": "jrocket",
             "jti": "123423423412346",
             "name": "Jesse Selitham",
-            "email": "jesse.selitham@kaazing.com"
+            "email": "jrocket@example.com"
         }
         */
+
+        // TODO fetch email from endpoint if missing.
+        if (!user.email) {
+            throw new Error('Missing Email');
+        }
 
         var token = jwt.sign({
             aud: user.app,
             sub: user.email,
             name: user.name,
-            email: user.email
+            email: user.email,
+            external_id: user.name,
         }, ZENDESK_TOKEN_SECRET, { 
             algorithm: ZENDESK_TOKEN_ALGORITHM,
             expiresIn: ZENDESK_TOKEN_DURATION
