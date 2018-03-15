@@ -9,9 +9,9 @@ module.exports = function (app) {
     // Set default env
     app.set('ZENDESK_CLIENT_ID', process.env.ZENDESK_CLIENT_ID || "kaazingsupport1505261284");
     app.set('ZENDESK_SUBDOMAIN', process.env.ZENDESK_SUBDOMAIN || process.env.ZENDESK_CLIENT_ID || "kaazingsupport1505261284");
-    app.set('ZENDESK_CLIENT_SECRET', process.env.ZENDESK_CLIENT_SECRET || "9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj");
+    app.set('ZENDESK_CLIENT_SECRET', process.env.ZENDESK_CLIENT_SECRET || "0YKoEVgenmGNzu3gIaKpwnQj0H3Oh57mD95qmKcn");
 
-    app.set('ZENDESK_TOKEN_SECRET', process.env.ZENDESK_TOKEN_ALGORITHM || "9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj");
+    app.set('ZENDESK_TOKEN_SECRET', process.env.ZENDESK_TOKEN_SECRET || "gYfkWN9hRtDAKdJClHgjIyJIH4C9GUVJC3AS4hscYSUvg7Sr");
     app.set('ZENDESK_TOKEN_ALGORITHM', process.env.ZENDESK_TOKEN_ALGORITHM || "HS256");
     app.set('ZENDESK_TOKEN_DURATION', process.env.ZENDESK_TOKEN_DURATION || "1h");
 
@@ -110,14 +110,16 @@ module.exports = function (app) {
             throw new Error('Missing email');
         }
 
+        console.log(user);
+
         var payload = {
             jti: uuidv4(),
-            iat: Date.now(),
-            aud: user.app,
-            sub: user.name,
-            name: user.name,
-            email: req.query.email,
-            external_id: user.name
+            iat: user.iat,
+            aud: user.iss,
+            sub: user.sub,
+            external_id: user.sub,
+            name: user.sub,
+            email: req.query.email
         };
 
         var token = jwt.sign(payload, ZENDESK_TOKEN_SECRET, { 
@@ -125,12 +127,14 @@ module.exports = function (app) {
             expiresIn: ZENDESK_TOKEN_DURATION
         });
 
+        console.log(payload);
+
         var result = {
             token: token,
             url: "https://" + ZENDESK_SUBDOMAIN + ".zendesk.com/access/jwt?jwt=" + encodeURIComponent(token)
         };
 
-        if (req.query.showPayload) {
+        if (req.query.payload) {
             result.payload = payload;
         }
 

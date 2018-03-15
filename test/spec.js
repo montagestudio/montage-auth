@@ -95,7 +95,7 @@ describe("/auth/jwks", function() {
 describe("/api/zendesk/token", function() {
 
     it("generate zendesk provider token", function(done) {
-        var email = 'robot@example.com';
+        var email = 'harold.thetiot@kaazing.com';
         var options = {
             hostname: 'localhost',
             port: 8080,
