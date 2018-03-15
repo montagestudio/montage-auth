@@ -132,6 +132,12 @@ docker run -p 8080:8080 montage-auth-service
 # Then open https://localhost:8080/swagger.html to check service.
 ```
 
+### Reset Zendesk external_id
+
+```
+curl -v -u user@domain.com:password https://domain.zendesk.com/api/v2/users/{id}.json -H "Content-Type: application/json" -X PUT -d '{"user": {"external_id":""}}'
+```
+
 ### Repository access
 
 To clone this git repository, Github require from you to deploy an ssh-key for authentication:

@@ -127,8 +127,6 @@ module.exports = function (app) {
             expiresIn: ZENDESK_TOKEN_DURATION
         });
 
-        console.log(payload);
-
         var result = {
             token: token,
             url: "https://" + ZENDESK_SUBDOMAIN + ".zendesk.com/access/jwt?jwt=" + encodeURIComponent(token)
