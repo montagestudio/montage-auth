@@ -132,6 +132,26 @@ docker run -p 8080:8080 montage-auth-service
 # Then open https://localhost:8080/swagger.html to check service.
 ```
 
+### Docker testing
+
+
+```
+docker run -it -d -p 5001:8080 -v /var/run/docker.sock:/var/run/docker.sock --name ra-demo-visualizer dockersamples/visualizer
+
+docker run -it -d -e APP_PORT='8080' -e APP_SSL='false' -p 8080:8080 -t montagestudio/montage-auth-service:develop-SNAPSHOT 
+
+docker run -it -d montagestudio/montage-auth-service:develop-SNAPSHOT -e APP_PORT='8080'  \
+-e APP_SECRET='d1087d4bb3533a72d690efd990dfc65e9de097d982f60cbb33f52388befc1c86' \
+-e APP_SSL='false' \
+-e APP_HOST='disasteraware.com' \
+-e APP_URL='http://disasteraware.com:8080' \
+-e JWKS_URI='https://testenterprise.disasteraware.com/jwt/jwks.json' \
+-e JWKS_ISSUER='https://testenterprise.disasteraware.com/jwt/jwks.json' \
+-e ZENDESK_TOKEN_SECRET='9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj' \
+-p 8080:8080 \
+ -t montagestudio/montage-auth-service:develop-SNAPSHOT 
+```
+
 ### Reset Zendesk external_id
 
 ```
