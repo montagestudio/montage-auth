@@ -37,7 +37,8 @@ services:
       JWKS_URI: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
       JWKS_ISSUER: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
       # Zendesk config
-      ZENDESK_TOKEN_SECRET: '9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj'
+      ZENDESK_SUBDOMAIN: kaazingsupport1505261284
+      ZENDESK_TOKEN_SECRET: 'gYfkWN9hRtDAKdJClHgjIyJIH4C9GUVJC3AS4hscYSUvg7Sr'
     networks:
       - local-aurora-montagestudio-com
     deploy:

@@ -7,7 +7,7 @@ info:
   contact:
     email: "support@montagestudio.com"
 host: ""
-basePath: "/"
+basePath: ""
 schemes:
 - "https"
 - "http"

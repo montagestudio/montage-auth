@@ -110,8 +110,6 @@ module.exports = function (app) {
             throw new Error('Missing email');
         }
 
-        console.log(user);
-
         var payload = {
             jti: uuidv4(),
             iat: user.iat,
@@ -136,7 +134,7 @@ module.exports = function (app) {
             result.payload = payload;
         }
 
+        res.status(201)
         res.json(result);
-
     });
 };

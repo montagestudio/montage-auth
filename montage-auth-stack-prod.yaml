@@ -12,12 +12,13 @@ services:
       APP_SSL: 'false'
       APP_PORT: '80'
       APP_HOST: 'localhost'
-      APP_URL: 'https://auth.disasteraware.com'
+      APP_URL: 'https://disasteraware.com'
       # JWT config
       JWKS_URI: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
       JWKS_ISSUER: 'https://testenterprise.disasteraware.com/jwt/jwks.json'
       # Zendesk config
-      ZENDESK_TOKEN_SECRET: '9ta9csrdHPnsKMFCXTxuvZqqIJ1BHEduLi9YEXbqaGUMZqTj'
+      ZENDESK_SUBDOMAIN: 'kaazingsupport'
+      ZENDESK_TOKEN_SECRET: '8IZVKPZXSxi6V49ppdgkCV9adUw5NSyj93hcY6ld35RCROtr'
     ports:
       - 80:80
     networks:
