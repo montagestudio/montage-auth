@@ -30,6 +30,7 @@
     "mocha": "^5.0.1"
   },
   "dependencies": {
+    "passport-github": "^1.1.0",
     "uuid": "^3.2.1"
   }
 }

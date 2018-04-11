@@ -84,7 +84,13 @@ ZENDESK_TOKEN_DURATION: '1h'
 # Twitter
 TWITTER_CONSUMER_KEY: 'YYmrT8z8xBsAMBWJeqhhmnxXD'
 TWITTER_CONSUMER_SECRET: 'KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi'
+
+# Github
+GITHUB_ID: '34ebda7d3a87b5922fc2'
+GITHUB_SECRET: '4de6dfcfeb747eed94406991067f6f5108779575'
 ```
+
+Note: This API Credentials are provided for demo only, they are not here to be public if this repository goes even Open-Source.
 
 ### Docker visualizer 
 

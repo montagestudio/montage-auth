@@ -6,6 +6,7 @@ var passport = require('passport');
 module.exports = function (app) {
 
     // Set default env
+    // https://apps.twitter.com/
     app.set('TWITTER_CONSUMER_KEY', process.env.TWITTER_CONSUMER_KEY || "YYmrT8z8xBsAMBWJeqhhmnxXD");
     app.set('TWITTER_CONSUMER_SECRET', process.env.TWITTER_CONSUMER_SECRET || "KmNYBsjmnEHlIghivYKFcbqGu4dSxzQ7qOvGFtMIYb1zirwkbi");
 
