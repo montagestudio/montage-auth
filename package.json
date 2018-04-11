@@ -8,7 +8,7 @@
     "start": "npm run start:swarm && npm run start:stack",
     "start:swarm": "docker swarm init",
     "start:stack": "docker stack deploy -c montage-auth-stack.yaml 'montage-auth'",
-    "start:doc": "open https://localhost/swagger.html",
+    "start:doc": "open https://localhost/doc/",
     "stop": "npm run stop:swarm",
     "stop:swarm": "docker swarm leave --force",
     "build": "npm run build:docker",
