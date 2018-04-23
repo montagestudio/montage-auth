@@ -40,6 +40,26 @@ paths:
       responses:
         200:
           description: "Successful operation"
+  /auth/github:
+    get:
+      tags:
+        - "github"
+      responses:
+        302:
+          description: "Successful operation"
+    post:
+      tags:
+        - "github"
+      responses:
+        302:
+          description: "Successful operation"
+  /auth/github/callback:
+    get:
+      tags:
+        - "github"
+      responses:
+        200:
+          description: "Successful operation"
   /auth/jwtks:
     get:
       tags:
