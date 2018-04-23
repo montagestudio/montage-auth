@@ -25,9 +25,10 @@ require('./middleware/passport')(app);
 require('./middleware/jwks')(app);
 require('./middleware/twitter')(app);
 require('./middleware/zendesk')(app);
+require('./middleware/github')(app);
 
 app.use(function (err, req, res, next) {
   console.error(err);
   res.status(500);
-  res.end(err.message);  
+  res.end(err.message);
 });
