@@ -3,22 +3,24 @@ var GithubStrategy = require('passport-github');
 var passport = require('passport');
 
 module.exports = function (app) {
-
     // Set default env
     // https://github.com/settings/developers
     app.set('GITHUB_ID', process.env.GITHUB_ID || "34ebda7d3a87b5922fc2");
     app.set('GITHUB_SECRET', process.env.GITHUB_SECRET || "4de6dfcfeb747eed94406991067f6f5108779575");
+    app.set('GITHUB_SCOPES', process.env.GITHUB_SCOPES || 'none');
 
     // Github middleware
     var APP_URL = app.get('APP_URL'),
         GITHUB_ID = app.get('GITHUB_ID'),
-        GITHUB_SECRET = app.get('GITHUB_SECRET');
+        GITHUB_SECRET = app.get('GITHUB_SECRET'),
+        GITHUB_SCOPES = app.get('GITHUB_SCOPES');
 
     passport.use(new GithubStrategy({
           passReqToCallback: true,
           clientID: GITHUB_ID,
           clientSecret: GITHUB_SECRET,
-          callbackURL: APP_URL + "/auth/github/callback"
+          callbackURL: APP_URL + "/auth/github/callback",
+          scope: GITHUB_SCOPES.split(',')
       },
       function(req, token, tokenSecret, profile, next) {
         next(null, {
